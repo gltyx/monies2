@@ -246,7 +246,7 @@
 				}
 			}
 		};
-		xhr.open("GET", "https://sneekxy.github.io/verNum.txt?id="+Math.random()+"", true);
+		xhr.open("GET", "verNum.txt?id="+Math.random()+"", true);
 		xhr.send();
 	}
 	function calcPerSec(){
