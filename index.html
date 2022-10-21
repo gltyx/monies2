@@ -1,0 +1,909 @@
+<HTML>
+	<TITLE>MONIES²</TITLE>
+	<HEAD>
+	<meta http-equiv='cache-control' content='no-cache'>
+	<meta http-equiv='expires' content='0'>
+	<meta http-equiv='pragma' content='no-cache'>
+	<link rel="shortcut icon" href="dragonicon.ico?" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="idle_css.css">
+	</HEAD>
+	<BODY onload="pageInit()">
+	<div id="wholeDocument">
+		<table class="moneyContainer" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF">
+			<tr><td>Monies</td></tr>
+			<tr style="background-color:#FFFFFF"><td class="shrink">$</td><td class="value" id="myMoney">0</td></tr>
+			<tr style="background-color:#F3F3ED"><td class="shrink">φ</td><td class="value" id="myMoney2">0</td></tr>
+			<tr style="background-color:#EAE127"><td class="shrink">☺</td><td class="value" id="myMoney3">0</td></tr>
+			<tr style="background-color:#1BDFED"><td class="shrink">♠</td><td class="value" id="myMoney4">0</td></tr>
+			<tr style="background-color:#8664BA"><td class="shrink">§</td><td class="value" id="myMoney5">0</td></tr>
+			<tr style="background-color:#1BC91A"><td class="shrink">∞</td><td class="value" id="myMoney6">0</td></tr>
+		</table>
+		<div>
+			Average $ per second: <span id="monPerSec"></span><br>
+		<!--	Average φ per second: <span id="mps2"></span><br>
+			Average smile per second: <span id="mps3"></span><br>
+			Average spade per second: <span id="mps4"></span><br> -->
+			Current Gain: <span id="gainer"></span><br>
+		</div>
+		
+		<div id="aaaa" style="display:none">
+		Gain from Shoes: <span id="oGainer"></span><br>
+		Gain from Bat: <span id="gainer1"></span><br>
+		Gain from Spade: <span id="gainer2"></span><br>
+		Gain from Bingo: <span id="gainer3"></span><br>
+		Gain from Ship: <span id="gainer4"></span><br>
+		Gain from Magic: <span id="gainer5"></span><br>
+		Gain from Ice: <span id="gainer9"></span><br>
+		Gain from Garb: <span id="gainerGarb"></span><br>
+		Gain from Crit: <span id="gainer6"></span><br>
+		Gain from YAHTZEE: <span id="gainer7"></span><br>
+		Gain from MELT: <span id="gainer10"> </span><br>
+		Total Gain: <span id="gainer8"></span><br><br><br>
+		Total Ticks: <span id="totalTickSpan"> </span><br>
+		Total Money: <span id="totalmoneySpan"> </span><br>
+		Money Spent on Shoes: <span id="spendOnShoe"> </span><br>
+		Money Spent on Spade: <span id="spendOnSpade"> </span><br>
+		Money Spent on Bingo: <span id="spendOnBingo"> </span><br>
+		Money Spent on Spaceship: <span id="spendOnShip"> </span><br>
+		Money Spent on Magic: <span id="spendOnMagic"> </span><br>
+		Money Spent on Bat: <span id="spendOnBat"> </span><br>
+		Money Spent on Ice Cubes: <span id="spendOnCube"> </span><br>
+		Money Spent on Garbage: <span id="spendOnGarbage"> </span><br>
+		</div>
+		
+		<button style="position:absolute;top:90%;left:0%" onClick="save()">Save</button>
+		<button style="position:absolute;top:90%;left:8%" onClick="reset()">Reset</button>
+		<!--
+		<button style="position:absolute;top:80%;" onClick="showUpgrade()">showUpgrade</button>
+		<button style="position:absolute;top:80%;left:8%" onClick="showB1UpgradeSlow()">loadUpgrade</button>
+		-->
+		<button style="position:absolute;top:0;left:25%" onClick="cycleBuy()">Buy <span id="buyAmount">1</span></button>
+		<div id="infiniteDump" class="infiniteDumpBtn" onclick="dumpInfinite()">
+			<span class="tooltiptext">
+				Sacrifice all of your ∞ to gain x4 $, φ, ☺, and ♠. This effect lasts for <span id="infiniteDuration"></span> ticks. (Increased by more ∞)
+			</span>
+		</div>
+		<div style="position:absolute;top:97%;left:0%" id="alert"></div>
+		
+		<div style="position:absolute;left:30%;top:0;width:280px;background-color:#FFFFFF" id="buyBox">
+			<div id="building0" style="display:none">
+				<div class="buyable" style="background-image:url('art/build1.png');" id="buy1" border="1" onclick="pickBuy(1)">
+				</div>
+				<div id="bgBuilding1" class="building"><span id="name1"></span><span class="shoeData" id="shoeRunChnc">Run Chance: <span id="runChance"></span></span><br>Currently owned: <span id="owned1"></span><span class="shoeData" id="shoeMultVal">Multiplier Duration: <span id="shoeMulti"></span></span><br>Cost: $<span id="cost1"></span><span class="shoeData" id="shoeMultiStep">Multistep: <span id="multiStepValue"></span></span>
+					<span class="tooltiptext">Your standard pair of shoes. Each pair lets you walk a mile in someone else's shoe! Each give $<span id="give1Txt"></span> a tick for a total of $<span id="total1Txt"></span> each tick. Buying one now has a worth of <span id="ratio1Txt"></span>
+					</span>
+				</div>
+			</div>
+			<div id="building1" style="display:none">
+				<div class="buyable" style="background-image:url('art/build2.png');" id="buy2" border="1" onclick="pickBuy(2)">
+				</div>
+				<div id="bgBuilding2" class="building"><span id="name2"></span><span class="digData">Dig Chance: <span id="digChance"></span></span><br>Currently owned: <span id="owned2"></span><span class="digData">Dig Multiplier: <span id="digMult"></span></span><br>Cost: $<span id="cost2"></span><span class="digData">Dig Value: <span id="digVal"></span></span>
+					<span class="tooltiptext">A tool typically used for digging up money. Each Spade has a chance of letting you dig a mile to earn bonus Shoe production for a tick! Each dig has a reduced chance to dig again! Each give $<span id="give2Txt"></span> a tick for a total of $<span id="total2Txt"></span> each tick. Buying one now has a worth of <span id="ratio2Txt"></span>
+					</span>
+				</div>
+			</div>
+			<div id="building2" style="display:none">
+				<div class="buyable" style="background-image:url('art/build3.png');" id="buy3" border="1" onclick="pickBuy(3)">
+				</div>
+				<div id="bgBuilding3" class="building"><span id="name3"></span><span class="digData">Bingo Bucks: <span id="bingoValue"></span></span><br>Currently owned: <span id="owned3"></span><span class="shoeData" id="bingoBuckChain">Bingo Chain: <span id="bingoChain"></span></span><br>Cost: $<span id="cost3"></span>
+					<span class="tooltiptext">A card game for parties and old people homes. Every <span id="bingoWait"></span> ticks <span id="bingoBallsCalled"></span> BINGO ball will be called out. The more bingo cards you have the better the payout! Each give $<span id="give3Txt"></span> a tick for a total of $<span id="total3Txt"></span> each tick. Buying one now has a worth of <span id="ratio3Txt"></span>
+					</span>				
+				</div>
+			</div>
+			<div id="building3" style="display:none">
+				<div class="buyable" style="background-image:url('art/build4.png');" id="buy4" border="1" onclick="pickBuy(4)">
+				</div>
+				<div id="bgBuilding4" class="building"><span id="name4"></span><span class="shoeData" id="shipLiftoffCounter">Lift Off T-minus: <span id="liftoffCounter"></span></span><br>Currently owned: <span id="owned4"></span><span class="shoeData" id="shipLiftoffDuration">OVERDRIVE: <span id="liftoffDuration"></span></span><br>Cost: $<span id="cost4"></span><span class="shoeData" id="shipRocketFuelPercent">Rocket Discount: <span id="rocketFuelPercent"></span>%</span>
+					<span class="tooltiptext">VROOOOOOOOM. Spaceships bring in a lot of money but are really expensive. Each spaceship you own makes the next one exponentially better. Your current Spaceship gives $<span id="give4currTxt"></span> a tick. Your next Spaceship gives $<span id="give4Txt"></span> a tick and you gain a total of $<span id="total4Txt"></span> each tick. Buying one now has a worth of <span id="ratio4Txt"></span>
+					</span>
+				</div>
+			</div>
+			<div id="building4" style="display:none">
+				<div class="buyable" style="background-image:url('art/build5.png');" id="buy5" border="1" onclick="pickBuy(5)">
+				</div>
+				<div id="bgBuilding5" class="building"><span id="name5"></span><span class="shoeData" id="magicAlterTime">Timewarp Remaining: <span id="alterTimeDuration"></span></span><br>Currently owned: <span id="owned5"></span><span class="shoeData" id="magicConjureMoney">Conjure Money: <span id="conjureMoneyValue"></span></span><br>Cost: $<span id="cost5"></span>
+					<span class="tooltiptext">Magic magically gives you magic money with a magical chance of producing φ. Magic! Each magically give $<span id="give5Txt"></span> a tick for a magical total of $<span id="total5Txt"></span> each tick. Magically buying one now has a magical worth of <span id="ratio5Txt"></span>
+					</span>
+				</div>
+			</div>
+			<div id="building5" style="display:none">
+				<div class="buyable" style="background-image:url('art/build6.png');" id="buy6" border="1" onclick="pickBuy(6)">
+				</div>
+				<div id="bgBuilding6" class="building"><span id="name6"></span><span class="digData">Batsplode Chance: <span id="batChance"></span></span><br>Currently owned: <span id="owned6"></span><span class="shoeData" id="batBaterest">Baterest Value: <span id="baterestValue"></span>%</span><br>Cost: $<span id="cost6"></span><span class="shoeData" id="batColdBat">Batsplode Immunity: <span id="coldBatDuration"></span></span>
+					<span class="tooltiptext">The Gold Bat 9000© is the 10th world wonder. Reaching insane speeds this baby out paces the Spookydook! However it's prone to failure but Ice Cubes help reduce the chance that it'll fail! Each gives $<span id="give6Txt"></span> a tick for a total of $<span id="total6Txt"></span> each tick. Buying one now has a worth of <span id="ratio6Txt"></span>
+					</span>				
+				</div>
+			</div>
+			<div id="building6" style="display:none">
+				<div class="buyable" style="background-image:url('art/build7.png');" id="buy7" border="1" onclick="pickBuy(7)">
+				</div>
+				<div id="bgBuilding7" class="building"><span id="name7"></span><span class="digData">Time Till Next Melt: <span id="iceTTL"></span></span><br>Currently owned: <span id="owned7"></span><span class="digData">Melt Value: <span id="iceMeltValue"></span></span><br>Cost: $<span id="cost7"></span>
+					<span class="tooltiptext">Water frozen by magic and enchanted to give you money. Ice Cubes melt over <span id="melt7Txt"></span> ticks. When a cube melts it produces bonus money and <span id="melt7Value"></span> ☺. Ice Cubes have a 10% chance to reform when melted. Each give $<span id="give7Txt"></span> a tick for a total of $<span id="total7Txt"></span> each tick. Buying one now has a Gain/Cost Ratio of <span id="ratio7Txt"></span>
+					</span>				
+				</div>
+			</div>
+			<div id="building7" style="display:none">
+				<div class="buyable" style="background-image:url('art/build8.png');" id="buy8" border="1" onclick="pickBuy(8)">
+				</div>
+				<div id="bgBuilding8" class="building"><span id="name8"></span><br>Currently owned: <span id="owned8"></span><br>Cost: $<span id="cost8"></span>
+					<span class="tooltiptext">Stinky smelly garbage. Different amounts of garbage produce different effects. When at an odd number of garbage they have a chance to give ♠. When at an even number, Time Warp is active and tick rate is greatly increased. Each gives $<span id="give8Txt"></span> a tick for a total of $<span id="total8Txt"></span> each tick. Buying one now has a worth of <span id="ratio8Txt"></span>
+					</span>
+				</div>
+			</div>
+			<div id="building8" style="display:none">
+				<div class="buyable" style="background-image:url('art/build9.png');" id="buy9" border="1" onclick="pickBuy(9)">
+				</div>
+				<div id="bgBuilding9" class="building"><span id="name9"></span><span class="shoeData" id="pieRanVal">Bonus Gain: <span id="pieRanGive"></span>%</span><br>Currently owned: <span id="owned9"></span><br>Cost: $<span id="cost9"></span>
+					<span class="tooltiptext">The once forgotten Pi(e). The sweet aroma fills you with money and reminds you of a better place. The smell has a 5% chance to condense into a physical form granting you ∞. Each gives $<span id="give9Txt"></span> a tick for a total of $<span id="total9Txt"></span> each tick. Buying one now has a worth of <span id="ratio9Txt"></span>
+					</span>
+				</div>
+			</div>
+			<div id="building9" style="display:none">
+				<div class="buyable" style="background-image:url('art/build10.png');" id="buy10" border="1" onclick="pickBuy(10)">
+				</div>
+				<div id="bgBuilding10" class="building"><span id="name10"></span><span class="digData" id="sleepRemaining">Ticks left to sleep: <span id="sleepDuration"></span></span><br>Currently owned: <span id="owned10"></span><span class="digData" id="sleepingAwake">Awake: <span id="sleepingAwakeDuration"></span></span><br>Cost: $<span id="cost10"></span>
+					<span class="tooltiptext">A peacefully sleeping Giant. It is said that this giant only awakens once every 50 ticks. If you listen closely you can hear faint whispers echoing "wake me up (CAN'T WAKE UP)". When awake giants can produce ∞. Each gives $<span id="give10Txt"></span> a tick when awake for a total of $<span id="total10Txt"></span> each tick when awake. Buying one now has a worth of <span id="ratio10Txt"></span>
+					</span>
+				</div>
+			</div>
+			<div id="building10" style="display:none">
+				<div class="buyable" style="background-image:url('art/build11.png');" id="buy11" border="1" onclick="pickBuy(11)">
+				</div>
+				<div id="bgBuilding11" class="building"><span id="name11"></span><span class="shoeData" id="tradeHolder">Trading: <span id="tradeBuilding"></span></span><br>Currently owned: <span id="owned11"></span><span class="shoeData" id="tradeDuration">Trade Duration: <span id="tradeDurationValue"></span></span><br>Cost: $<span id="cost11"></span>
+					<span class="tooltiptext">A single red paper clip. The potential for this baby is infinite! The more money that has been spent on other buildings increase the value of this one! Better get trading. Gives ∞! Each gives $<span id="give11Txt"></span> a tick for a total of $<span id="total11Txt"></span> each tick. Buying one now has a worth of <span id="ratio11Txt"></span>
+					</span>
+				</div>
+			</div>
+		</div>
+		
+		<div style="position:absolute;left:70%;top:0;display:none" id="upgBox">
+			<div id="upgradeSelector" class="upgHolder">
+				<div class="upgable" style="background-image:url('art/upgBuy.png');" id="upgSel" border="1" onclick="handleUpgBuy()">
+					<span class="tooltiptext">Turn in your ☺ to unlock ONE buildings hidden potential! It currently costs <span id="smileyCost"></span> ☺ to unlock the next building. Fully unlocking a buildings potential gives that building a 10% chance to produce ♠
+					</span>
+				</div>
+			</div>
+			<div id="upgrade0" class="upgHolderD">
+				<div class="upgable" style="background-image:url('art/build1.0.png');" id="upg1" border="1" onclick="buyUpg(1)">
+					<span class="tooltiptext">Allows you to unlock the hidden potential of Shoes. Doing so leads to a drastic increase to shoe production and the ability to run through time
+					</span>
+				</div>
+			</div>
+			<div id="upgrade1" class="upgHolderD">
+				<div class="upgable" style="background-image:url('art/build2.0.png');" id="upg2" border="1" onclick="buyUpg(2)">
+					<span class="tooltiptext">Allows you to unlock the hidden potential of Spades. Doing so leads to Dig multiplier bonuses and stronger Digs
+					</span>
+				</div>
+			</div>
+			<div id="upgrade2" class="upgHolderD">
+				<div class="upgable" style="background-image:url('art/build3.0.png');" id="upg3" border="1" onclick="buyUpg(3)">
+					<span class="tooltiptext">Allows you to unlock the hidden potential of Bingos. Doing so leads to easier Bingos and stronger Bingo Bucks
+					</span>
+				</div>
+			</div>
+			<div id="upgrade3" class="upgHolderD">
+				<div class="upgable" style="background-image:url('art/build4.0.png');" id="upg4" border="1" onclick="buyUpg(4)">
+					<span class="tooltiptext">Allows you to unlock the hidden potential of Spaceships. Doing so leads to vastly increased Spaceship production and reduced costs
+					</span>
+				</div>
+			</div>
+			<div id="upgrade4" class="upgHolderD">
+				<div class="upgable" style="background-image:url('art/build5.0.png');" id="upg5" border="1" onclick="buyUpg(5)">
+					<span class="tooltiptext">Allows you to unlock the hidden potential of Magic. Doing so leads to improved φ generation and time altering magic
+					</span>
+				</div>
+			</div>
+			<div id="upgrade5" class="upgHolderD">
+				<div class="upgable" style="background-image:url('art/build6.0.png');" id="upg6" border="1" onclick="buyUpg(6)">
+					<span class="tooltiptext">Allows you to unlock the hidden potential of Gold Bat 9000. Doing so leads to reduced Batsplosions and cumulative Gold Bat 9000 gains
+					</span>
+				</div>
+			</div>
+			<div id="upgrade6" class="upgHolderD">
+				<div class="upgable" style="background-image:url('art/build7.0.png');" id="upg7" border="1" onclick="buyUpg(7)">
+					<span class="tooltiptext">Allows you to unlock the hidden potential of Ice Cubes. Doing so leads to strong faster better and permanent Ice Cubes
+					</span>
+				</div>
+			</div>
+			<div id="upgrade7" class="upgHolderD">
+				<div class="upgable" style="background-image:url('art/build8.0.png');" id="upg8" border="1" onclick="buyUpg(8)">
+					<span class="tooltiptext">Allows you to unlock the hidden potential of Garbage. Doing so leads to more powerful bonuses based on the number of Garbage
+					</span>
+				</div>
+			</div>
+		</div>
+		<div style="display:none;" id="manaArea">
+			<div class="manaDumpButton1" style="left:78%; background-image:url('art/manaBtn1.png');" id="manaBtn1" onclick="manaDumpFunc(1)">
+				<div class="tooltiptext">Dump all of your ♠ into your Mana pool. Your Mana is channelled to increase all of the $ you earn.
+				</div>
+			</div>
+			<div class="manaTank" style="left:78%;" id="manaTank1">
+				<div class="tooltiptext">Your Mana pool is <span id="mana1Percent">0</span>% full. It currently increases all of the $ you earn by <span id="mana1Worth">0</span>%! You have sacrificed a total of <span id="mana1Dump">0</span>♠s for this cause
+				</div>
+				<div class="manaBarBackground1"></div>
+				<div class="manaBar" id="manaBar1"></div>
+			</div>
+			
+			<div class="manaDumpButton2" style="left:85%; background-image:url('art/manaBtn2.png');" id="manaBtn2" onclick="manaDumpFunc(2)">
+				<div class="tooltiptext">Dump all of your ♠ into your Manna pool. Your Manna is channelled to increase all of the ♠ you earn.
+				</div>
+			</div>
+			<div class="manaTank" style="left:85%;" id="manaTank2">
+				<div class="tooltiptext">Your Manna pool is <span id="mana2Percent">0</span>% full. It currently increases all of the ♠ you earn by <span id="mana2Worth">0</span>%! You have sacrificed a total of <span id="mana2Dump">0</span>♠s for this cause
+				</div>
+				<div class="manaBarBackground2"></div>
+				<div class="manaBar" id="manaBar2"></div>
+			</div>
+			
+			<div class="manaDumpButton3" style="left:92%; background-image:url('art/manaBtn3.png');" id="manaBtn3" onclick="manaDumpFunc(3)">
+				<div class="tooltiptext">Dump all of your $ into your Moana pool. Your Moana is channelled for a mysterious effect that is not yet known.
+				</div>
+			</div>
+			<div class="manaTank" style="left:92%;" id="manaTank3">
+				<div class="tooltiptext">Your Moana pool is <span id="mana3Percent">0</span>% full. You have sacrificed a total of $<span id="mana3Dump">0</span> for this cause. You need $<span id="mana3DumpRemain">0</span> more to fill it up
+				</div>
+				<div class="manaBarBackground3"></div>
+				<div class="manaBar" id="manaBar3"></div>
+			</div>
+		</div>
+		
+		<div id="buildingUpgrades" class="upgrade">
+			<div id="upgCloseBtn" style="background-image:url('art/close.png'); cursor:hand; width:45px;height:45px;position:absolute;left:92%;" onclick="hideUpgrade()"></div>
+			<div id="costNextUpg" class="upgCostText">φ for next upgrade:<span id="nxtUpgValue" class="upgCostValue"></span></div>
+			<div id="b1Upgrades">
+				<div id="b1upg1" class="upgradeBox" style="left:10px; top:210px" onClick="buy1Upgrade(0)">
+					<span class="tooltipRight"><span class="upgTitle">Head Start</span></br>Increases the base income of Shoes by 1 
+					</span>
+				</div>
+				<div id="b1upg2" class="upgradeBox" style="left:110px; top:120px" onClick="buy1Upgrade(1)">
+					<span class="tooltipRight"><span class="upgTitle">Foreign Production</span></br>Reduces the cost multiplier of Shoes by 0.2% 
+					</span>
+				</div>
+				<div id="b1upg3" class="upgradeBox" style="left:230px; top:130px" onClick="buy1Upgrade(2)">
+					<span class="tooltipRight"><span class="upgTitle">Dirty Digs</span></br>Reduces the base cost of Spades by 5% 
+					</span>
+				</div>
+				<div id="b1upg4" class="upgradeBox" style="left:360px; top:150px" onClick="buy1Upgrade(3)"> 
+					<span class="tooltipLeft"><span class="upgTitle">Time's my name. Speed's my game</span></br>Time between ticks is reduced by 0.01 seconds 
+					</span>
+				</div>
+				<div id="b1upg5" class="upgradeBox" style="left:280px; top:230px" onClick="buy1Upgrade(4)">
+					<span class="tooltipLeft"><span class="upgTitle">Multistep</span></br>Increases Shoe Gain by 100% per Shoe owned. This increase does not count towards dig bonuses
+					</span>
+				</div>
+				<div id="b1upg6" class="upgradeBox" style="left:370px; top:270px" onClick="buy1Upgrade(5)">
+					<span class="tooltipLeft"><span class="upgTitle">Tie the Knot</span></br>Increases the base income of Shoes by 1 
+					</span>
+				</div>
+				<div id="b1upg7" class="upgradeBox" style="left:90px; top:320px" onClick="buy1Upgrade(6)">
+					<span class="tooltipRight"><span class="upgTitle">Sharp Digger</span></br>Increases chance to dig by 0.5% 
+					</span>
+				</div>
+				<div id="b1upg8" class="upgradeBox" style="left:200px; top:330px" onClick="buy1Upgrade(7)">
+					<span class="tooltipRight"><span class="upgTitle">GOLD STRUCK</span></br>Digs have a 20% chance to increase Shoe production by 70000% for the 10 ticks. This bonus does not count towards dig bonuses
+					</span>
+				</div>
+				<div id="b1upg9" class="upgradeBox" style="left:190px; top:440px" onClick="buy1Upgrade(8)">
+					<span class="tooltipRight"><span class="upgTitle">Running Friction</span></br>Reduces the number of ticks for Ice Cubes to melt by 15 
+					</span>
+				</div>
+				<div id="b1upg10" class="upgradeBox" style="left:300px; top:490px" onClick="buy1Upgrade(9)">
+					<span class="tooltipLeft"><span class="upgTitle">RUN!</span></br>Your Shoes have a 5% chance to run giving 5 ticks insead of 1 
+					</span>
+				</div>
+				<div id="b1upg11" class="upgradeBox" style="left:400px; top:430px" onClick="buy1Upgrade(10)">
+					<span class="tooltipLeft"><span class="upgTitle">Faster Feet</span></br>Your Shoes now have an additional 5% chance to run 
+					</span>
+				</div>
+				
+				<div id="b1l1" class="upgradeLineSlant1" style="left:70px; top:280px"></div>
+				<div id="b1l2" class="upgradeLineSlant1" style="left:160px; top:400px"></div>
+				<div id="b1l3" class="upgradeLineSlant1" style="left:265px; top:480px"></div>
+				<div id="b1l4" class="upgradeLineSlant1" style="left:240px; top:200px"></div>
+				<div id="b1l5" class="upgradeLineSlant2" style="left:80px; top:180px"></div>
+				<div id="b1l6" class="upgradeLineSlant2" style="left:370px; top:500px"></div>
+				<div id="b1l7" class="upgradeLineVert" style="left:390px; top:225px"></div>
+				<div id="b1l8" class="upgradeLineHor" style="left:180px; top:150px"></div>
+				<div id="b1l9" class="upgradeLineHor" style="left:310px; top:170px"></div>
+				<div id="b1l10" class="upgradeLineHor" style="left:155px; top:360px"></div>
+				
+				<div id="b1upg1amt" class="upgAmt" style="left:10px; top:276px"></div>
+				<div id="b1upg2amt" class="upgAmt" style="left:110px; top:186px"></div>
+				<div id="b1upg3amt" class="upgAmt" style="left:266px; top:196px"></div>
+				<div id="b1upg4amt" class="upgAmt" style="left:360px; top:216px"></div>
+				<div id="b1upg5amt" class="upgAmt" style="left:280px; top:296px"></div>
+				<div id="b1upg6amt" class="upgAmt" style="left:370px; top:336px"></div>
+				<div id="b1upg7amt" class="upgAmt" style="left:90px; top:386px"></div>
+				<div id="b1upg8amt" class="upgAmt" style="left:200px; top:396px"></div>
+				<div id="b1upg9amt" class="upgAmt" style="left:190px; top:506px"></div>
+				<div id="b1upg10amt" class="upgAmt" style="left:300px; top:556px"></div>
+				<div id="b1upg11amt" class="upgAmt" style="left:436px; top:496px"></div>
+				
+			</div>
+			
+			<div id="b2Upgrades">
+				<div id="b2upg1" class="upgradeBox" style="left:240px; top:540px" onClick="buy2Upgrade(0)">
+					<span class="tooltipRight"><span class="upgTitle">Dig Dug</span></br>Increases the base income of Spades by 8
+					</span>
+				</div>
+				<div id="b2upg2" class="upgradeBox" style="left:240px; top:430px" onClick="buy2Upgrade(1)">
+					<span class="tooltipRight"><span class="upgTitle">Digging Frenzy</span></br>Increase dig multiplier by 10% for each consecutive dig
+					</span>
+				</div>
+				<div id="b2upg3" class="upgradeBox" style="left:240px; top:320px" onClick="buy2Upgrade(2)">
+					<span class="tooltipRight"><span class="upgTitle">Exploding Spades</span></br>Increases the bonus of Digging Frenzy by 5%
+					</span>
+				</div>
+				<div id="b2upg4" class="upgradeBox" style="left:120px; top:440px" onClick="buy2Upgrade(3)"> 
+					<span class="tooltipRight"><span class="upgTitle">Cloned Spades</span></br>Reduces the cost multiplier of Spades by 0.2%
+					</span>
+				</div>
+				<div id="b2upg5" class="upgradeBox" style="left:120px; top:320px" onClick="buy2Upgrade(4)">
+					<span class="tooltipRight"><span class="upgTitle">No Breaks</span></br>Increases the chance for consecutive digs by 7%
+					</span>
+				</div>
+				<div id="b2upg6" class="upgradeBox" style="left:190px; top:230px" onClick="buy2Upgrade(5)">
+					<span class="tooltipLeft"><span class="upgTitle">Elevator Shoes</span></br>Digs now use 150% of Shoe production 
+					</span>
+				</div>
+				<div id="b2upg7" class="upgradeBox" style="left:250px; top:120px" onClick="buy2Upgrade(6)">
+					<span class="tooltipRight"><span class="upgTitle">Bagger 288</span></br>Getting 5 consecutive digs will triple dig multiplier for the next dig
+					</span>
+				</div>
+				<div id="b2upg8" class="upgradeBox" style="left:310px; top:220px" onClick="buy2Upgrade(7)">
+					<span class="tooltipRight"><span class="upgTitle">Fiery Spades</span></br>Digs have a 5% chance to reduce the remaining ticks on Ice Cubes by 1
+					</span>
+				</div>
+				<div id="b2upg9" class="upgradeBox" style="left:420px; top:270px" onClick="buy2Upgrade(8)">
+					<span class="tooltipLeft"><span class="upgTitle">Bladed Shoes</span></br>Every 25 shoes give 1% crit
+					</span>
+				</div>
+				<div id="b2upg10" class="upgradeBox" style="left:420px; top:380px" onClick="buy2Upgrade(9)">
+					<span class="tooltipLeft"><span class="upgTitle">The Weight of Many</span></br>Increases your dig multiplier by 0.1 for each non-Spade building you own
+					</span>
+				</div>
+				<div id="b2upg11" class="upgradeBox" style="left:350px; top:460px" onClick="buy2Upgrade(10)">
+					<span class="tooltipLeft"><span class="upgTitle">Stab the ground</span></br>Increases dig chance by 2% 
+					</span>
+				</div>
+				
+				<div id="b2l1" class="upgradeLineVert" style="left:270px; top:500px"></div>
+				<div id="b2l2" class="upgradeLineVert" style="left:270px; top:390px"></div>
+				<div id="b2l3" class="upgradeLineVert" style="left:150px; top:400px"></div>
+				<div id="b2l4" class="upgradeLineVert" style="left:455px; top:340px"></div>
+				<div id="b2l5" class="upgradeLineHor" style="left:190px; top:470px"></div>
+				<div id="b2l6" class="upgradeLineHor" style="left:305px; top:480px"></div>
+				<div id="b2l7" class="upgradeLineSlant2" style="left:150px; top:280px"></div>
+				<div id="b2l8" class="upgradeLineSlant2" style="left:210px; top:180px"></div>
+				<div id="b2l9" class="upgradeLineSlant2" style="left:380px; top:420px"></div>
+				<div id="b2l10" class="upgradeLineSlant1" style="left:320px; top:180px"></div>
+				<div id="b2l11" class="upgradeLineSlant1" style="left:380px; top:250px"></div>
+				
+				<div id="b2upg1amt" class="upgAmt" style="left:240px; top:606px"></div>
+				<div id="b2upg2amt" class="upgAmt" style="left:240px; top:496px"></div>
+				<div id="b2upg3amt" class="upgAmt" style="left:240px; top:386px"></div>
+				<div id="b2upg4amt" class="upgAmt" style="left:120px; top:506px"></div>
+				<div id="b2upg5amt" class="upgAmt" style="left:120px; top:386px"></div>
+				<div id="b2upg6amt" class="upgAmt" style="left:190px; top:296px"></div>
+				<div id="b2upg7amt" class="upgAmt" style="left:250px; top:186px"></div>
+				<div id="b2upg8amt" class="upgAmt" style="left:310px; top:286px"></div>
+				<div id="b2upg9amt" class="upgAmt" style="left:420px; top:336px"></div>
+				<div id="b2upg10amt" class="upgAmt" style="left:420px; top:446px"></div>
+				<div id="b2upg11amt" class="upgAmt" style="left:350px; top:526px"></div>
+			</div>
+			
+			<div id="b3Upgrades">
+				<div id="b3upg1" class="upgradeBox" style="left:50px; top:160px" onClick="buy3Upgrade(0)">
+					<span class="tooltipRight"><span class="upgTitle">Up the Ante</span></br>Increases the base income of Bingos by 3
+					</span>
+				</div>
+				<div id="b3upg2" class="upgradeBox" style="left:50px; top:300px" onClick="buy3Upgrade(1)">
+					<span class="tooltipRight"><span class="upgTitle">Bigger Gains</span></br>Increases the scaling on the Bingo Bucks reward by 6%
+					</span>
+				</div>
+				<div id="b3upg3" class="upgradeBox" style="left:60px; top:440px" onClick="buy3Upgrade(2)">
+					<span class="tooltipRight"><span class="upgTitle">Chain Reaction</span></br>Each BINGO within the same tick increase the Bingo Bucks reward by 5% 
+					</span>
+				</div>
+				<div id="b3upg4" class="upgradeBox" style="left:170px; top:440px" onClick="buy3Upgrade(3)"> 
+					<span class="tooltipRight"><span class="upgTitle">BINGO Balls</span></br>Increases the number of BINGO balls called out by 1
+					</span>
+				</div>
+				<div id="b3upg5" class="upgradeBox" style="left:250px; top:140px" onClick="buy3Upgrade(4)">
+					<span class="tooltipRight"><span class="upgTitle">Senior Discount</span></br>Reduces the cost multiplier for Bingos by 0.15%
+					</span>
+				</div>
+				<div id="b3upg6" class="upgradeBox" style="left:260px; top:290px" onClick="buy3Upgrade(5)">
+					<span class="tooltipRight"><span class="upgTitle">Getting Old Fast</span></br>Time between ticks is reduced by 0.05 seconds 
+					</span>
+				</div>
+				<div id="b3upg7" class="upgradeBox" style="left:270px; top:410px" onClick="buy3Upgrade(6)">
+					<span class="tooltipRight"><span class="upgTitle">Handicapped</span></br>Bingo cards now start with a free space in the middle
+					</span>
+				</div>
+				<div id="b3upg8" class="upgradeBox" style="left:420px; top:150px" onClick="buy3Upgrade(7)">
+					<span class="tooltipLeft"><span class="upgTitle">Bribe the Caller</span></br>Reduces the number of ticks needed to call out a BINGO ball by 10
+					</span>
+				</div>
+				<div id="b3upg9" class="upgradeBox" style="left:440px; top:280px" onClick="buy3Upgrade(8)">
+					<span class="tooltipLeft"><span class="upgTitle">Heating up the Competition</span></br>BINGOs have a 15% chance to reduce the remaining time on Ice Cubes by 1
+					</span>
+				</div>
+				<div id="b3upg10" class="upgradeBox" style="left:450px; top:420px" onClick="buy3Upgrade(9)">
+					<span class="tooltipLeft"><span class="upgTitle">Extra Balls</span></br>Increases the number of BINGO balls called out by 1
+					</span>
+				</div>
+				<div id="b3upg11" class="upgradeBox" style="left:350px; top:350px" onClick="buy3Upgrade(10)">
+					<span class="tooltipLeft"><span class="upgTitle">BINGO²</span></br>Every BINGO has a 15% chance to grant an extra BINGO
+					</span>
+				</div>
+				
+				<div id="b3l1" class="upgradeLineVert" style="left:80px; top:250px"></div>
+				<div id="b3l2" class="upgradeLineVert" style="left:80px; top:380px"></div>
+				<div id="b3l3" class="upgradeLineVert" style="left:290px; top:220px"></div>
+				<div id="b3l4" class="upgradeLineVert" style="left:300px; top:360px"></div>
+				<div id="b3l5" class="upgradeLineVert" style="left:460px; top:230px"></div>
+				<div id="b3l6" class="upgradeLineVert" style="left:480px; top:360px"></div>
+				<div id="b3l7" class="upgradeLineHor" style="left:127px; top:470px"></div>
+				<div id="b3l8" class="upgradeLineSlant1" style="left:410px; top:420px"></div>
+				
+				
+				<div id="b3upg1amt" class="upgAmt" style="left:50px; top:226px"></div>
+				<div id="b3upg2amt" class="upgAmt" style="left:50px; top:366px"></div>
+				<div id="b3upg3amt" class="upgAmt" style="left:60px; top:506px"></div>
+				<div id="b3upg4amt" class="upgAmt" style="left:170px; top:506px"></div>
+				<div id="b3upg5amt" class="upgAmt" style="left:250px; top:206px"></div>
+				<div id="b3upg6amt" class="upgAmt" style="left:260px; top:356px"></div>
+				<div id="b3upg7amt" class="upgAmt" style="left:270px; top:476px"></div>
+				<div id="b3upg8amt" class="upgAmt" style="left:420px; top:216px"></div>
+				<div id="b3upg9amt" class="upgAmt" style="left:440px; top:346px"></div>
+				<div id="b3upg10amt" class="upgAmt" style="left:450px; top:486px"></div>
+				<div id="b3upg11amt" class="upgAmt" style="left:350px; top:416px"></div>
+				
+			
+			</div>
+			
+			<div id="b4Upgrades">
+				<div id="b4upg1" class="upgradeBox" style="left:250px; top:60px" onClick="buy4Upgrade(0)">
+					<span class="tooltipRight"><span class="upgTitle">Rocket Fleet</span></br>Increases the bonus gain of Spaceships by 1%
+					</span>
+				</div>
+				<div id="b4upg2" class="upgradeBox" style="left:170px; top:140px" onClick="buy4Upgrade(1)">
+					<span class="tooltipRight"><span class="upgTitle">Engage Thrusters</span></br>Reduces the number of ticks for Ice Cubes to melt by 15
+					</span>
+				</div>
+				<div id="b4upg3" class="upgradeBox" style="left:100px; top:230px" onClick="buy4Upgrade(2)">
+					<span class="tooltipRight"><span class="upgTitle">Warp Speed</span></br>Time between ticks is reduced by .1 seconds 
+					</span>
+				</div>
+				<div id="b4upg4" class="upgradeBox" style="left:100px; top:350px" onClick="buy4Upgrade(3)"> 
+					<span class="tooltipRight"><span class="upgTitle">Exotic Goods</span></br>Increases the base income of Spaceships by 25
+					</span>
+				</div>
+				<div id="b4upg5" class="upgradeBox" style="left:170px; top:450px" onClick="buy4Upgrade(4)">
+					<span class="tooltipRight"><span class="upgTitle">Lift Off</span></br>Every 40 ticks Spaceships give <span id="overdriveValue"></span>% increased production for 10 ticks. (Based on amount of Spaceships owned)
+					</span>
+				</div>
+				<div id="b4upg6" class="upgradeBox" style="left:160px; top:570px" onClick="buy4Upgrade(5)">
+					<span class="tooltipRight"><span class="upgTitle">Challenger</span></br>Ice Cubes have a 25% chance to reduce their remaining tick duration by 1 during Lift Off
+					</span>
+				</div>
+				<div id="b4upg7" class="upgradeBox" style="left:360px; top:140px" onClick="buy4Upgrade(6)">
+					<span class="tooltipLeft"><span class="upgTitle">Efficient Engineering</span></br>Reduces the cost multiplier for Spaceships by 0.5%
+					</span>
+				</div>
+				<div id="b4upg8" class="upgradeBox" style="left:380px; top:250px" onClick="buy4Upgrade(7)">
+					<span class="tooltipLeft"><span class="upgTitle">Scrap Metal</span></br>Every 10 Spaceships gives a free Spaceship
+					</span>
+				</div>
+				<div id="b4upg9" class="upgradeBox" style="left:380px; top:370px" onClick="buy4Upgrade(8)">
+					<span class="tooltipLeft"><span class="upgTitle">Lighter Material</span></br>Reduces the base cost of Spaceships by 5%
+					</span>
+				</div>
+				<div id="b4upg10" class="upgradeBox" style="left:320px; top:470px" onClick="buy4Upgrade(9)">
+					<span class="tooltipLeft"><span class="upgTitle">Rocket Fuel Leak</span></br>Spaceships recycle rocket fuel over time. Rocket fuel is used to negotiate discounts on Spaceship purchases (up to 20% off)
+					</span>
+				</div>
+				<div id="b4upg11" class="upgradeBox" style="left:320px; top:580px" onClick="buy4Upgrade(10)">
+					<span class="tooltipLeft"><span class="upgTitle">Columbia</span></br>Increases Rocket Fuel discount by 10%
+					</span>
+				</div>
+				
+				<div id="b4l1" class="upgradeLineSlant2" style="left:210px; top:100px"></div>
+				<div id="b4l2" class="upgradeLineSlant2" style="left:130px; top:190px"></div>
+				<div id="b4l3" class="upgradeLineVert" style="left:130px; top:305px"></div>
+				<div id="b4l4" class="upgradeLineSlant1" style="left:135px; top:420px"></div>
+				<div id="b4l5" class="upgradeLineVert" style="left:200px; top:520px"></div>			
+				
+				<div id="b4l6" class="upgradeLineSlant1" style="left:320px; top:100px"></div>
+				<div id="b4l7" class="upgradeLineVert" style="left:410px; top:210px"></div>
+				<div id="b4l8" class="upgradeLineVert" style="left:420px; top:320px"></div>
+				<div id="b4l9" class="upgradeLineSlant2" style="left:340px; top:430px"></div>
+				<div id="b4l10" class="upgradeLineVert" style="left:360px; top:540px"></div>
+			
+				<div id="b4upg1amt" class="upgAmt" style="left:250px; top:126px"></div>
+				<div id="b4upg2amt" class="upgAmt" style="left:170px; top:206px"></div>
+				<div id="b4upg3amt" class="upgAmt" style="left:100px; top:296px"></div>
+				<div id="b4upg4amt" class="upgAmt" style="left:100px; top:416px"></div>
+				<div id="b4upg5amt" class="upgAmt" style="left:170px; top:516px"></div>
+				<div id="b4upg6amt" class="upgAmt" style="left:160px; top:636px"></div>
+				<div id="b4upg7amt" class="upgAmt" style="left:360px; top:206px"></div>
+				<div id="b4upg8amt" class="upgAmt" style="left:380px; top:316px"></div>
+				<div id="b4upg9amt" class="upgAmt" style="left:380px; top:436px"></div>
+				<div id="b4upg10amt" class="upgAmt" style="left:320px; top:536px"></div>
+				<div id="b4upg11amt" class="upgAmt" style="left:320px; top:646px"></div>
+			</div>
+			
+			<div id="b5Upgrades">
+				<div id="b5upg1" class="upgradeBox" style="left:100px; top:380px" onClick="buy5Upgrade(0)">
+					<span class="tooltipRight"><span class="upgTitle">Free Rabbits</span></br>Reduces the base cost of Magic by 20%
+					</span>
+				</div>
+				<div id="b5upg2" class="upgradeBox" style="left:200px; top:310px" onClick="buy5Upgrade(1)">
+					<span class="tooltipRight"><span class="upgTitle">Brighter Lights</span></br>Increases the base gain of Magic by 40%
+					</span>
+				</div>
+				<div id="b5upg3" class="upgradeBox" style="left:300px; top:230px" onClick="buy5Upgrade(2)">
+					<span class="tooltipRight"><span class="upgTitle">Better Equipment</span></br>Increases the chance to gain φ by 15%
+					</span>
+				</div>
+				<div id="b5upg4" class="upgradeBox" style="left:320px; top:110px" onClick="buy5Upgrade(3)"> 
+					<span class="tooltipRight"><span class="upgTitle">Duplicate Trick</span></br>When you gain a φ you have a 25% chance to gain another
+					</span>
+				</div>
+				<div id="b5upg5" class="upgradeBox" style="left:430px; top:220px" onClick="buy5Upgrade(4)">
+					<span class="tooltipLeft"><span class="upgTitle">Conjure Money</span></br>You gain $<span id="tridentBaseGain">x</span> when you gain a φ
+					</span>
+				</div>
+				<div id="b5upg6" class="upgradeBox" style="left:180px; top:130px" onClick="buy5Upgrade(5)">
+					<span class="tooltipRight"><span class="upgTitle">Faster Illusions</span></br>Reduces the time between ticks by .02 seconds
+					</span>
+				</div>
+				<div id="b5upg7" class="upgradeBox" style="left:50px; top:160px" onClick="buy5Upgrade(6)">
+					<span class="tooltipRight"><span class="upgTitle">Plastic Rabbits</span></br>Reduces the cost multiplier of Magic by 0.2%
+					</span>
+				</div>
+				<div id="b5upg8" class="upgradeBox" style="left:60px; top:290px" onClick="buy5Upgrade(7)">
+					<span class="tooltipRight"><span class="upgTitle">Alter Time</span></br>Gaining 10 φ in a single tick has a 30% chance to reduce tick rate by .7 seconds for 20 ticks
+					</span>
+				</div>
+				<div id="b5upg9" class="upgradeBox" style="left:320px; top:360px" onClick="buy5Upgrade(8)">
+					<span class="tooltipLeft"><span class="upgTitle">Pyrokinesis</span></br>Reduces the number of ticks for Ice Cubes to melt by 20
+					</span>
+				</div>
+				<div id="b5upg10" class="upgradeBox" style="left:260px; top:480px" onClick="buy5Upgrade(9)">
+					<span class="tooltipLeft"><span class="upgTitle">Hidden Value</span></br>When an Ice Cube melts you gain up to <span id="meltTridentGain">x</span> φ
+					</span>
+				</div>
+				<div id="b5upg11" class="upgradeBox" style="left:380px; top:480px" onClick="buy5Upgrade(10)">
+					<span class="tooltipLeft"><span class="upgTitle">Feedback Loop</span></br>Gaining a φ has a 10% chance to reduce the remaining ticks on Ice Cubes by 1
+					</span>
+				</div>
+				
+		
+				<div id="b5l1" class="upgradeLineSlant2" style="left:165px; top:350px"></div>
+				<div id="b5l2" class="upgradeLineSlant2" style="left:270px; top:300px"></div>
+				<div id="b5l3" class="upgradeLineVert" style="left:350px; top:180px"></div>
+				<div id="b5l4" class="upgradeLineHor" style="left:380px; top:250px"></div>
+				
+				<div id="b5l5" class="upgradeLineHor" style="left:130px; top:170px"></div>			
+				<div id="b5l6" class="upgradeLineVert" style="left:90px; top:240px"></div>
+				
+				<div id="b5l7" class="upgradeLineSlant2" style="left:280px; top:430px"></div>
+				<div id="b5l8" class="upgradeLineSlant1" style="left:390px; top:430px"></div>
+
+			
+				<div id="b5upg1amt" class="upgAmt" style="left:100px; top:446px"></div>
+				<div id="b5upg2amt" class="upgAmt" style="left:200px; top:376px"></div>
+				<div id="b5upg3amt" class="upgAmt" style="left:300px; top:296px"></div>
+				<div id="b5upg4amt" class="upgAmt" style="left:320px; top:176px"></div>
+				<div id="b5upg5amt" class="upgAmt" style="left:430px; top:286px"></div>
+				<div id="b5upg6amt" class="upgAmt" style="left:180px; top:196px"></div>
+				<div id="b5upg7amt" class="upgAmt" style="left:50px; top:226px"></div>
+				<div id="b5upg8amt" class="upgAmt" style="left:60px; top:356px"></div>
+				<div id="b5upg9amt" class="upgAmt" style="left:320px; top:426px"></div>
+				<div id="b5upg10amt" class="upgAmt" style="left:260px; top:546px"></div>
+				<div id="b5upg11amt" class="upgAmt" style="left:380px; top:546px"></div>
+				
+			</div>
+			<div id="b6Upgrades">
+				<div id="b6upg1" class="upgradeBox" style="left:200px; top:220px" onClick="buy6Upgrade(0)">
+					<span class="tooltipRight"><span class="upgTitle">Silver Bat 100</span></br>Reduces the cost multiplier of Gold Bat 9000s by 10%
+					</span>
+				</div>
+				<div id="b6upg2" class="upgradeBox" style="left:190px; top:330px" onClick="buy6Upgrade(1)">
+					<span class="tooltipRight"><span class="upgTitle">24 Carrot Bats</span></br>Increases the base gain of Gold Bat 9000s by 75%
+					</span>
+				</div>
+				<div id="b6upg3" class="upgradeBox" style="left:70px; top:270px" onClick="buy6Upgrade(2)"> 
+					<span class="tooltipRight"><span class="upgTitle">Stronger Bats</span></br>Reduces the increasing Batsplode chance by 10%
+					</span>
+				</div>
+				<div id="b6upg4" class="upgradeBox" style="left:100px; top:400px" onClick="buy6Upgrade(3)">
+					<span class="tooltipRight"><span class="upgTitle">Gold Bat 9001</span></br>Reduces the Batsplode chance by 10%
+					</span>
+				</div>
+				<div id="b6upg5" class="upgradeBox" style="left:50px; top:160px" onClick="buy6Upgrade(4)">
+					<span class="tooltipRight"><span class="upgTitle">Gold Bat Fail Safe</span></br>Reduces the Critical Batsplode chance by 20%
+					</span>
+				</div>
+				<div id="b6upg6" class="upgradeBox" style="left:320px; top:280px" onClick="buy6Upgrade(5)">
+					<span class="tooltipLeft"><span class="upgTitle">Contained Batsplosions</span></br>Batsplosions are 10% less effective
+					</span>
+				</div>
+				<div id="b6upg7" class="upgradeBox" style="left:450px; top:280px" onClick="buy6Upgrade(6)">
+					<span class="tooltipLeft"><span class="upgTitle">Bat Chains</span></br>Batsplosions can no longer happen more than twice in a row
+					</span>
+				</div>
+				<div id="b6upg8" class="upgradeBox" style="left:400px; top:170px" onClick="buy6Upgrade(7)">
+					<span class="tooltipLeft"><span class="upgTitle">Compounding Baterest</span></br>Gold Bat 9000s have <span id="baterestValue2"></span>% more gain every tick. This bonus is reduced by 70% when a Batsplosion occurs
+					</span>
+				</div>
+				<div id="b6upg9" class="upgradeBox" style="left:280px; top:380px" onClick="buy6Upgrade(8)">
+					<span class="tooltipRight"><span class="upgTitle">Colder Cubes</span></br>Increases the Ice Cube Batsplosion reduction by 10%
+					</span>
+				</div>
+				<div id="b6upg10" class="upgradeBox" style="left:230px; top:480px" onClick="buy6Upgrade(9)">
+					<span class="tooltipLeft"><span class="upgTitle">Blast Wave</span></br>Batsplosions reduce the remaining time on Ice Cubes by 1 ticks
+					</span>
+				</div>
+				<div id="b6upg11" class="upgradeBox" style="left:350px; top:480px" onClick="buy6Upgrade(10)">
+					<span class="tooltipLeft"><span class="upgTitle">Cold Bat 9000</span></br>When an Ice Cube Melts Gold Bat 9000s cannot fail for 4 ticks
+					</span>
+				</div>
+				
+		
+				<div id="b6l1" class="upgradeLineVert" style="left:240px; top:290px"></div>
+				<div id="b6l2" class="upgradeLineSlant1" style="left:150px; top:330px"></div>
+				<div id="b6l3" class="upgradeLineVert" style="left:110px; top:350px"></div>
+				<div id="b6l4" class="upgradeLineVert" style="left:90px; top:230px"></div>
+				
+				<div id="b6l5" class="upgradeLineSlant1" style="left:280px; top:270px"></div>			
+				<div id="b6l6" class="upgradeLineHor" style="left:400px; top:320px"></div>
+				<div id="b6l7" class="upgradeLineSlant1" style="left:440px; top:240px"></div>
+				
+				<div id="b6l8" class="upgradeLineSlant2" style="left:240px; top:440px"></div>
+				<div id="b6l9" class="upgradeLineHor" style="left:300px; top:510px"></div>
+
+			
+				<div id="b6upg1amt" class="upgAmt" style="left:200px; top:286px"></div>
+				<div id="b6upg2amt" class="upgAmt" style="left:190px; top:396px"></div>
+				<div id="b6upg3amt" class="upgAmt" style="left:70px; top:336px"></div>
+				<div id="b6upg4amt" class="upgAmt" style="left:100px; top:466px"></div>
+				<div id="b6upg5amt" class="upgAmt" style="left:50px; top:226px"></div>
+				<div id="b6upg6amt" class="upgAmt" style="left:320px; top:346px"></div>
+				<div id="b6upg7amt" class="upgAmt" style="left:450px; top:346px"></div>
+				<div id="b6upg8amt" class="upgAmt" style="left:400px; top:236px"></div>
+				<div id="b6upg9amt" class="upgAmt" style="left:280px; top:446px"></div>
+				<div id="b6upg10amt" class="upgAmt" style="left:230px; top:546px"></div>
+				<div id="b6upg11amt" class="upgAmt" style="left:350px; top:546px"></div>
+				
+			</div>
+			
+			<div id="b7Upgrades">
+				<div id="b7upg1" class="upgradeBox" style="left:270px; top:330px" onClick="buy7Upgrade(0)">
+					<span class="tooltipRight"><span class="upgTitle">Pristine Water</span></br>Increases the base gain of Ice Cubes by 10%
+					</span>
+				</div>
+				<div id="b7upg2" class="upgradeBox" style="left:250px; top:200px" onClick="buy7Upgrade(1)">
+					<span class="tooltipRight"><span class="upgTitle">Thawing</span></br>Reduces the number of ticks for Ice Cubes to melt by 10
+					</span>
+				</div>
+				<div id="b7upg3" class="upgradeBox" style="left:350px; top:120px" onClick="buy7Upgrade(2)"> 
+					<span class="tooltipLeft"><span class="upgTitle">Special Snowflakes</span></br>Increases the amount of money you gain from ice melting by about 5%
+					</span>
+				</div>
+				<div id="b7upg4" class="upgradeBox" style="left:200px; top:110px" onClick="buy7Upgrade(3)">
+					<span class="tooltipRight"><span class="upgTitle">Reverse Melting</span></br>Ice Cubes have a 50% chance to reform when they melt
+					</span>
+				</div>
+				<div id="b7upg5" class="upgradeBox" style="left:90px; top:200px" onClick="buy7Upgrade(4)">
+					<span class="tooltipRight"><span class="upgTitle">Frozen Forever</span></br>Ice Cubes always reform when they melt
+					</span>
+				</div>
+				<div id="b7upg6" class="upgradeBox" style="left:150px; top:330px" onClick="buy7Upgrade(5)">
+					<span class="tooltipRight"><span class="upgTitle">Chilled Time</span></br>Reduces the time between ticks by .05 seconds
+					</span>
+				</div>
+				<div id="b7upg7" class="upgradeBox" style="left:20px; top:330px" onClick="buy7Upgrade(6)">
+					<span class="tooltipRight"><span class="upgTitle">Brittle Ice</span></br>Reduces the number of ticks for Ice Cubes to melt by 10
+					</span>
+				</div>
+				<div id="b7upg8" class="upgradeBox" style="left:20px; top:470px" onClick="buy7Upgrade(7)">
+					<span class="tooltipRight"><span class="upgTitle">Free Water</span></br>Reduces the cost multiplier of Ice Cubes by 10%
+					</span>
+				</div>
+				<div id="b7upg9" class="upgradeBox" style="left:390px; top:330px" onClick="buy7Upgrade(8)">
+					<span class="tooltipLeft"><span class="upgTitle">Shatter</span></br>Reduces the number of ticks for Ice Cubes to melt by 10
+					</span>
+				</div>
+				<div id="b7upg10" class="upgradeBox" style="left:480px; top:240px" onClick="buy7Upgrade(9)">
+					<span class="tooltipLeft"><span class="upgTitle">Unstable Elements</span></br>Ice Cubes have a 3% chance to instantly melt when below 50 ticks remaining
+					</span>
+				</div>
+				<div id="b7upg11" class="upgradeBox" style="left:490px; top:400px" onClick="buy7Upgrade(10)">
+					<span class="tooltipLeft"><span class="upgTitle">Snow Day</span></br>Ice Cubes give an extra ☺ when they melt
+					</span>
+				</div>
+				
+		
+				<div id="b7l1" class="upgradeLineVert" style="left:290px; top:280px"></div>
+				<div id="b7l2" class="upgradeLineSlant2" style="left:310px; top:160px"></div>
+				<div id="b7l3" class="upgradeLineHor" style="left:280px; top:140px"></div>
+				<div id="b7l4" class="upgradeLineSlant2" style="left:160px; top:160px"></div>
+				
+				<div id="b7l5" class="upgradeLineHor" style="left:220px; top:360px"></div>			
+				<div id="b7l6" class="upgradeLineHor" style="left:100px; top:360px"></div>
+				<div id="b7l7" class="upgradeLineVert" style="left:60px; top:410px"></div>	
+				
+				<div id="b7l8" class="upgradeLineHor" style="left:340px; top:360px"></div>
+				<div id="b7l9" class="upgradeLineSlant2" style="left:440px; top:290px"></div>
+				<div id="b7l10" class="upgradeLineVert" style="left:520px; top:330px"></div>
+
+			
+				<div id="b7upg1amt" class="upgAmt" style="left:270px; top:396px"></div>
+				<div id="b7upg2amt" class="upgAmt" style="left:250px; top:266px"></div>
+				<div id="b7upg3amt" class="upgAmt" style="left:350px; top:186px"></div>
+				<div id="b7upg4amt" class="upgAmt" style="left:200px; top:176px"></div>
+				<div id="b7upg5amt" class="upgAmt" style="left:90px; top:266px"></div>
+				<div id="b7upg6amt" class="upgAmt" style="left:150px; top:396px"></div>
+				<div id="b7upg7amt" class="upgAmt" style="left:20px; top:396px"></div>
+				<div id="b7upg8amt" class="upgAmt" style="left:20px; top:536px"></div>
+				<div id="b7upg9amt" class="upgAmt" style="left:390px; top:396px"></div>
+				<div id="b7upg10amt" class="upgAmt" style="left:480px; top:306px"></div>
+				<div id="b7upg11amt" class="upgAmt" style="left:490px; top:466px"></div>
+				
+			</div>
+			<div id="b8Upgrades">
+				<div id="b8upg1" class="upgradeBox" style="left:280px; top:300px" onClick="buy8Upgrade(0)">
+					<span class="tooltipRight"><span class="upgTitle">One Man's Trash</span></br>Increases the base gain of Garbage by 100%
+					</span>
+				</div>
+				<div id="b8upg2" class="upgradeBox" style="left:150px; top:340px" onClick="buy8Upgrade(1)">
+					<span class="tooltipRight"><span class="upgTitle">Recycling</span></br>Reduces the cost multiplier of Garbage by 10%
+					</span>
+				</div>
+				<div id="b8upg3" class="upgradeBox" style="left:150px; top:230px" onClick="buy8Upgrade(2)"> 
+					<span class="tooltipRight"><span class="upgTitle">Dumpster Diving</span></br>Increases the Chance for Garbage to give ♠ by 10%
+					</span>
+				</div>
+				<div id="b8upg4" class="upgradeBox" style="left:160px; top:120px" onClick="buy8Upgrade(3)">
+					<span class="tooltipRight"><span class="upgTitle">Diamond in the Rough</span></br>Garbage can now always give ♠ and can give <span id="garbageSpadeGiveBonus"></span> extra ♠
+					</span>
+				</div>
+				<div id="b8upg5" class="upgradeBox" style="left:60px; top:150px" onClick="buy8Upgrade(4)">
+					<span class="tooltipRight"><span class="upgTitle">Landfill</span></br>Reduces the base cost of Garbage by 20%
+					</span>
+				</div>
+				<div id="b8upg6" class="upgradeBox" style="left:280px; top:430px" onClick="buy8Upgrade(5)">
+					<span class="tooltipRight"><span class="upgTitle">Wasting Time</span></br>Reduces the time between ticks by .03 seconds
+					</span>
+				</div>
+				<div id="b8upg7" class="upgradeBox" style="left:150px; top:440px" onClick="buy8Upgrade(6)">
+					<span class="tooltipRight"><span class="upgTitle">Rotten Fruit</span></br>Multiples of 4 Garbage increases all $ earned by 5%
+					</span>
+				</div>
+				<div id="b8upg8" class="upgradeBox" style="left:30px; top:440px" onClick="buy8Upgrade(7)">
+					<span class="tooltipRight"><span class="upgTitle">'Fresh' Meat</span></br>Increases the bonus of Rotten Fruit by 5%
+					</span>
+				</div>
+				<div id="b8upg9" class="upgradeBox" style="left:400px; top:400px" onClick="buy8Upgrade(8)">
+					<span class="tooltipLeft"><span class="upgTitle">Liquid Trash</span></br>The tick speed bonus from Time Warp is increased by 10%
+					</span>
+				</div>
+				<div id="b8upg10" class="upgradeBox" style="left:400px; top:270px" onClick="buy8Upgrade(9)">
+					<span class="tooltipLeft"><span class="upgTitle">Garbage Bag Sack Races</span></br>Multiples of 3 Garbage cause every 3 ticks to perform an extra tick
+					</span>
+				</div>
+				<div id="b8upg11" class="upgradeBox" style="left:410px; top:140px" onClick="buy8Upgrade(10)">
+					<span class="tooltipLeft"><span class="upgTitle">Is Another Man's Treasure</span></br>Multiples of 5 Garbage Produce 7x the current gain of garbage
+					</span>
+				</div>
+				
+		
+				<div id="b8l1" class="upgradeLineHor" style="left:230px; top:360px"></div>
+				<div id="b8l2" class="upgradeLineVert" style="left:180px; top:300px"></div>
+				<div id="b8l3" class="upgradeLineSlant1" style="left:130px; top:190px"></div>
+				<div id="b8l4" class="upgradeLineVert" style="left:200px; top:190px"></div>
+				
+				<div id="b8l5" class="upgradeLineVert" style="left:320px; top:380px"></div>			
+				<div id="b8l6" class="upgradeLineHor" style="left:230px; top:470px"></div>
+				<div id="b8l7" class="upgradeLineHor" style="left:100px; top:470px"></div>	
+				
+				<div id="b8l8" class="upgradeLineHor" style="left:350px; top:440px"></div>
+				<div id="b8l9" class="upgradeLineVert" style="left:440px; top:350px"></div>
+				<div id="b8l10" class="upgradeLineVert" style="left:450px; top:220px"></div>
+
+			
+				<div id="b8upg1amt" class="upgAmt" style="left:280px; top:366px"></div>
+				<div id="b8upg2amt" class="upgAmt" style="left:150px; top:406px"></div>
+				<div id="b8upg3amt" class="upgAmt" style="left:150px; top:296px"></div>
+				<div id="b8upg4amt" class="upgAmt" style="left:160px; top:186px"></div>
+				<div id="b8upg5amt" class="upgAmt" style="left:60px; top:216px"></div>
+				<div id="b8upg6amt" class="upgAmt" style="left:280px; top:496px"></div>
+				<div id="b8upg7amt" class="upgAmt" style="left:150px; top:506px"></div>
+				<div id="b8upg8amt" class="upgAmt" style="left:30px; top:506px"></div>
+				<div id="b8upg9amt" class="upgAmt" style="left:400px; top:466px"></div>
+				<div id="b8upg10amt" class="upgAmt" style="left:400px; top:336px"></div>
+				<div id="b8upg11amt" class="upgAmt" style="left:410px; top:206px"></div>
+				
+			</div>
+			
+			
+		</div>
+		
+		<div id="avatarUpgrades" class="upgrade" style="background-size: 45px 45px; background-image:url('art/sacBG.png')">
+		<div id="discoBGID" class="discoBG">
+			<div id="discoWinner" class="discoWin">
+				YOU WIN!
+			</div>
+		</div>
+		<div id="discoBallID" class="discoBall">
+			<div id="discoBallBG" class="discoBallBG">
+			</div>
+		</div>
+		<div id="discoBlackBox" class="blackBox">
+		</div>
+		
+		
+		<div id="convertBG" style="background-image:url('art/close.png'); cursor:hand; width:45px;height:45px;position:absolute;left:92%;" onclick="summonAvatar()"></div>
+		<div id="sacButton" class="sacBtn" style="background-image:url('art/sacrifice.png'); cursor:hand; left:275; width:45px; height:45px; position:absolute;" onclick="convertMonies()">
+			<div class="tooltiptext">
+				Convert all of your $, φ, ☺, and ♠ into §. Sacrificing now will give <span id="sacReward"></span>§
+			</div>
+		</div>
+		<div id="avatarPlace" class="avatar">
+		</div>
+		<div id="avatarUpgradeSpot" class="avatarUpgrade">
+			<div id="avaUpgID" style="display:none"></div>
+			<div id="avaUpgSlot" style="cursor:hand;" class="avaUpgSlot" onclick="buyAvaUpgrade()"></div>
+			<div id="avaUpgDesc" class="avaUpg">
+				<div id="avaUpgTT" class="tooltiptext">
+				</div>
+			</div>
+			<div class="avaUpgPrice">§<span id="avaUpgPrice"></span></div>
+		</div>
+		</div>
+		
+		<div class="summonBtn" id="summonButton" style="cursor:hand;" onclick="summonAvatar()">
+			<div class="tooltiptext">
+				Consume all of your Moana to summon a random Dream
+			</div>
+		</div>
+		
+	</div>
+	</BODY>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="idle_js.js"></script>
+	<script src="shoes.js"></script>
+	<script src="dig.js"></script>
+	<script src="bingo.js"></script>
+	<script src="ship.js"></script>
+	<script src="ice.js"></script>
+	<script src="buyBuildings.js"></script>
+	<script src="magic.js"></script>
+	<script src="bat.js"></script>
+	<script src="garbage.js"></script>
+	<script src="upgrades.js"></script>
+	<script src="build1Upgrade.js"></script>
+	<script src="build2Upgrade.js"></script>
+	<script src="build3Upgrade.js"></script>
+	<script src="build4Upgrade.js"></script>
+	<script src="build5Upgrade.js"></script>
+	<script src="build6Upgrade.js"></script>
+	<script src="build7Upgrade.js"></script>
+	<script src="build8Upgrade.js"></script>
+	<script src="mana.js"></script>
+	<script src="avatar.js"></script>
+	<script src="pie.js"></script>
+	<script src="giant.js"></script>
+	<script src="rpc.js"></script>
+	<script src="disco.js"></script>
+	
+	
+
+</HTML>
+	
